@@ -10,15 +10,18 @@
   
   
   
-  <meta name="keywords" content="递归，递推，记忆化搜索">
+  <meta name="description" content="NOIP2001普及组的一道题">
+<meta name="keywords" content="递归，递推，记忆化搜索">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P1028【数的计算】题解">
 <meta property="og:url" content="http://yoursite.com/P1028/index.html">
 <meta property="og:site_name" content="但丁的桃子">
+<meta property="og:description" content="NOIP2001普及组的一道题">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-16T00:31:52.786Z">
+<meta property="og:updated_time" content="2019-10-16T00:55:15.530Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="P1028【数的计算】题解">
+<meta name="twitter:description" content="NOIP2001普及组的一道题">
   
     <link rel="alternate" href="/atom.xml" title="但丁的桃子" type="application/atom+xml">
   
@@ -86,7 +89,25 @@
     
     <div class="article-content article-content-cloud" itemprop="articleBody">
       
-        
+        <h1 id="NOIP2001普及组的一道题"><a href="#NOIP2001普及组的一道题" class="headerlink" title="NOIP2001普及组的一道题"></a>NOIP2001普及组的一道题</h1><a id="more"></a>
+<p><a href="https://www.luogu.org/problem/P1028" target="_blank" rel="noopener">洛谷原题</a><br><em>【题目描述】</em><br>我们要求找出具有下列性质数的个数(包含输入的自然数nn):</p>
+<p>先输入一个自然数n(n≤1000),然后对此自然数按照如下方法进行处理:</p>
+<p>不作任何处理;</p>
+<p>在它的左边加上一个自然数,但该自然数不能超过原数的一半;</p>
+<p>加上数后,继续按此规则进行处理,直到不能再加自然数为止.</p>
+<p><em>输入格式</em><br>1个自然数n(n≤1000)</p>
+<p><em>输出格式</em><br>1个整数，表示具有该性质数的个数。</p>
+<p><em>样例</em><br>输入：6<br>输出：6</p>
+<p><em>提示</em><br>满足条件的数为<br>6，16，26，126，36，136</p>
+<p><strong>这是一道还算好想的数学题，一般都是想到直接递归搜索答案，就像下面这样</strong></p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;//万能头文件</span><br><span class="line">using namespace std;</span><br><span class="line">int sum=0;//计数器</span><br><span class="line">void dfs(int a)//搜索统计a延伸出的数据总和</span><br><span class="line">&#123;</span><br><span class="line">    sum++;//每当有一个符合条件的原数时，计数器+1</span><br><span class="line">    for(int i=1;i&lt;=a/2;i++)//在左边添加一个不超过原数一半的自然数，作为下一个原数，这里很好的回避了如何提取出最左边数字的工作</span><br><span class="line">    dfs(i);</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    dfs(n);</span><br><span class="line">    cout&lt;&lt;sum;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>以上这个代码非常好的过了样例之后，拿去评测的结果却是</strong><br>![是大海的颜色]](<a href="https://i.loli.net/2019/10/16/HGrQqEOoBXMiy1J.png" target="_blank" rel="noopener">https://i.loli.net/2019/10/16/HGrQqEOoBXMiy1J.png</a> “我太难了”)</p>
+<p><strong>不难想出，用递归求解时当n过大会有许多重复计算而导致TLE，所以可以引用记忆化搜索优化程序如下</strong></p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;bits/stdc++.h&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">int j[10010];</span><br><span class="line">int sum=0;</span><br><span class="line">void dfs(int a)</span><br><span class="line">&#123;</span><br><span class="line">    if(j[a]!=-1)//j[a]=-1说明已经求得，可直接引用</span><br><span class="line">      return;</span><br><span class="line">    j[a]=1;//把a本身记作一种情况</span><br><span class="line">    sum++;</span><br><span class="line">    for(int i=1;i&lt;=a/2;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        dfs(i);</span><br><span class="line">        j[a]+=j[i];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n;</span><br><span class="line">    cin&gt;&gt;n;</span><br><span class="line">    for(int i=1;i&lt;=n;i++)</span><br><span class="line">      j[i]=-1;//把j初始化为-1</span><br><span class="line">    dfs(n);//从上到下记搜递归求解</span><br><span class="line">    cout&lt;&lt;j[n];</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>完美AC</strong><br>![是大自然的颜色]](<a href="https://i.loli.net/2019/10/16/n9tLX2m4ZMh7sxS.png" target="_blank" rel="noopener">https://i.loli.net/2019/10/16/n9tLX2m4ZMh7sxS.png</a> “%%%%%%”)</p>
+
       
     </div>
     
