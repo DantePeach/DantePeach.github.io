@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>P3383【模板】线性筛素数题解 | 但丁的桃子</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  
+  
+  <meta name="description" content="线性筛素数的一道模板题">
+<meta name="keywords" content="C++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P3383【模板】线性筛素数题解">
+<meta property="og:url" content="http://yoursite.com/P3383/index.html">
+<meta property="og:site_name" content="但丁的桃子">
+<meta property="og:description" content="线性筛素数的一道模板题">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-22T09:37:00.581Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="P3383【模板】线性筛素数题解">
+<meta name="twitter:description" content="线性筛素数的一道模板题">
+  
+    <link rel="alternate" href="/atom.xml" title="但丁的桃子" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://i.loli.net/2019/10/14/fSGXIx3UYtvwbz6.jpg">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/highlight.css">
+</head>
+</html>
+<body>
+  <div id="fullpage" class="mobile-nav-right">
+    
+      <div id="wrapper" style="background-image: url(https://i.loli.net/2019/10/13/AGICocMrjeUg6OT.png)" title="不要颓废动起来">
+    
+    
+      <header id="header">
+  <div id="nav-toggle" class="nav-toggle"></div>
+  <div class="head-box global-width">
+    <nav class="nav-box nav-right">
+      
+        <a class="nav-item" href="/" title
+        
+        >首页</a>
+      
+        <a class="nav-item" href="/archives" title
+        
+        >归档</a>
+      
+    </nav>
+  </div>
+</header>
+      <div id="middlecontent" title class="global-width sidebar-right">
+        <section id="main"><article id="post-P3383" class="article global-container article-type-post" itemscope itemprop="blogPost">
+  
+    <header class="article-header">
+      
+  
+    <h1 class="article-title" itemprop="name">
+      P3383【模板】线性筛素数题解
+    </h1>
+  
+
+    </header>
+  
+  <div class="article-meta">
+    <a href="/P3383/" class="article-date">
+  <time datetime="2019-10-21T16:00:00.000Z" itemprop="datePublished">2019-10-22</time>
+</a>
+    
+    
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/">C++</a></li></ul>
+
+  </div>
+  
+    <span id="busuanzi_container_page_pv">
+      本文总阅读量<span id="busuanzi_value_page_pv"></span>次
+    </span>
+  
+
+  <div class="article-inner">
+    
+    <div class="article-content article-content-cloud" itemprop="articleBody">
+      
+        <h1 id="线性筛素数的一道模板题"><a href="#线性筛素数的一道模板题" class="headerlink" title="线性筛素数的一道模板题"></a>线性筛素数的一道模板题</h1><a id="more"></a>
+<p><a href="https://www.luogu.org/problem/P3383" target="_blank" rel="noopener">洛谷原题</a></p>
+<h3 id="【题目描述】"><a href="#【题目描述】" class="headerlink" title="【题目描述】"></a><em>【题目描述】</em></h3><p>如题，给定一个范围N，你需要处理M个某数字是否为质数的询问（每个数字均在范围1-N内）</p>
+<h3 id="【输入格式】"><a href="#【输入格式】" class="headerlink" title="【输入格式】"></a><em>【输入格式】</em></h3><p>第一行包含两个正整数N、M，分别表示查询的范围和查询的个数。</p>
+<p>接下来M行每行包含一个不小于1且不大于N的整数，即询问该数是否为质数。</p>
+<h3 id="【输出格式】"><a href="#【输出格式】" class="headerlink" title="【输出格式】"></a><em>【输出格式】</em></h3><p>输出包含M行，每行为Yes或No，即依次为每一个询问的结果。</p>
+<h3 id="【样例】"><a href="#【样例】" class="headerlink" title="【样例】"></a><em>【样例】</em></h3><p>输入：<br>100 5<br>2<br>3<br>4<br>91<br>97<br>输出：<br>Yes<br>Yes<br>No<br>No<br>Yes</p>
+<h3 id="【提示-说明】"><a href="#【提示-说明】" class="headerlink" title="【提示/说明】"></a><em>【提示/说明】</em></h3><p>时空限制：500ms 128M</p>
+<p>数据规模：</p>
+<p>对于30%的数据：N&lt;=10000，M&lt;=10000</p>
+<p>对于100%的数据：N&lt;=10000000，M&lt;=100000</p>
+<p>样例说明：</p>
+<p>N=100，说明接下来的询问数均不大于100且不小于1。</p>
+<p>所以2、3、97为质数，4、91非质数。</p>
+<p>故依次输出Yes、Yes、No、No、Yes。</p>
+<h3 id="首先我们需要了解几个筛选素数的方法"><a href="#首先我们需要了解几个筛选素数的方法" class="headerlink" title="**首先我们需要了解几个筛选素数的方法"></a>**首先我们需要了解几个筛选素数的方法</h3><p>1)Eratosthenes筛法（埃拉托斯特尼筛选法）</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bool p[100001]; //p[i]=true 表示i是素数</span><br><span class="line">int n,tot;</span><br><span class="line">int main() </span><br><span class="line">&#123;</span><br><span class="line">	cin&gt;&gt;n;</span><br><span class="line">	for(int i=2;i&lt;=n;i++) </span><br><span class="line">      p[i]=true;</span><br><span class="line">	for(int i=2;i&lt;=n;i++)</span><br><span class="line">	  for(int j=i*2;j&lt;=n;j+=i) </span><br><span class="line">        p[j]=false;</span><br><span class="line">	for(int i=2;i&lt;=n;i++) </span><br><span class="line">      if(p[i])  </span><br><span class="line">        tot++;</span><br><span class="line">	cout&lt;&lt;tot&lt;&lt;endl;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>对于上面这串代码可以有3个优化</p>
+<p><strong>优化1</strong>：<br>    实际上，如果i不是一个素数的话，可以不剔除它的倍数，因为它的倍数已经被它的因数剔除掉了，于是</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for(int i=2;i&lt;=n;i++)</span><br><span class="line">  if(p[i])</span><br><span class="line">    for(int j=i*2;j&lt;=n;j+=i) </span><br><span class="line">      p[j]=false; //p[i]是素数时剔除</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>优化2</strong>：<br>    只需要筛选到n的算术平方根即可</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">n=sqrt(n+0.5);</span><br></pre></td></tr></table></figure></div>
+
+<p><strong>优化3</strong>：<br>    可以不从i×2开始筛，在i=2时就筛过了；不必从i×3，在i=3时就筛过了······据此可以推断，不必从i×（i-1）开始筛，就直接从i×i开始，如下</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for(int i=2;i&lt;=n;i++)</span><br><span class="line">  if(p[i]) </span><br><span class="line">    for(int j=i*i;j&lt;=n;j+=i) </span><br><span class="line">      p[j]=false;</span><br></pre></td></tr></table></figure></div>
+
+<p>综上我们就可以得到一个O(n log log n)的算法</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">bool p[100001];</span><br><span class="line">int n,sn,tot;</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">	cin&gt;&gt;n;</span><br><span class="line">	sn=sqrt(n+0.5);</span><br><span class="line">	for(int i=2;i&lt;=n;i++) </span><br><span class="line">      p[i]=true;</span><br><span class="line">	for(int i=2;i&lt;=sn;i++)</span><br><span class="line">	  if(p[i]) </span><br><span class="line">    for(int j=i*i;j&lt;=n;j+=i) </span><br><span class="line">      p[j]=false;</span><br><span class="line">	for(int i=2;i&lt;=n;i++) </span><br><span class="line">      if(p[i]) </span><br><span class="line">        tot++;</span><br><span class="line">	cout&lt;&lt;tot&lt;&lt;endl;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>这道题使用埃拉托斯特尼筛法的代码如下</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define N 10000010</span><br><span class="line">int s[N];</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    int n,m;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);</span><br><span class="line">    for(int i=1;i&lt;=n;i++)</span><br><span class="line">      s[i]=1;</span><br><span class="line">    s[0]=s[1]=0;</span><br><span class="line">    for(int i=2;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(s[i]==1)</span><br><span class="line">        &#123;</span><br><span class="line">            for(int j=i*2;j&lt;=n;j+=i)</span><br><span class="line">                s[j]=0;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for(int i=1;i&lt;=m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        int t;</span><br><span class="line">        scanf(&quot;%d&quot;,&amp;t);</span><br><span class="line">        if(s[t]==1) </span><br><span class="line">          printf(&quot;Yes\n&quot;);</span><br><span class="line">        else</span><br><span class="line">         printf(&quot;No\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>时间复杂度：O(n log log n)</p>
+<h2 id="Eratosthenes筛法的缺陷-：对于一个合数，有可能被筛多次。例如-30-215-310-56……-那么如何解决呢？我们只要用它的最小质因子来筛就可以保证每个合数只被筛一次。所以接下来就是真正的主角：欧拉筛法（时间复杂度为O-n"><a href="#Eratosthenes筛法的缺陷-：对于一个合数，有可能被筛多次。例如-30-215-310-56……-那么如何解决呢？我们只要用它的最小质因子来筛就可以保证每个合数只被筛一次。所以接下来就是真正的主角：欧拉筛法（时间复杂度为O-n" class="headerlink" title="Eratosthenes筛法的缺陷 ：对于一个合数，有可能被筛多次。例如[ 30=215=310=56……]那么如何解决呢？我们只要用它的最小质因子来筛就可以保证每个合数只被筛一次。所以接下来就是真正的主角：欧拉筛法（时间复杂度为O(n))"></a><em>Eratosthenes筛法的缺陷 ：对于一个合数，有可能被筛多次。例如[ 30=2</em>15=3<em>10=5</em>6……]那么如何解决呢？我们只要用它的最小质因子来筛就可以保证每个合数只被筛一次。所以接下来就是真正的主角：欧拉筛法（时间复杂度为O(n))</h2><div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">int prime[maxn];</span><br><span class="line">int visit[maxn];</span><br><span class="line">void Prime()</span><br><span class="line">&#123;</span><br><span class="line">    memset(visit,0,sizeof(visit));</span><br><span class="line">    memset(prime, 0,sizeof(visit));</span><br><span class="line">    for (int i=2;i&lt;=maxn;i++) </span><br><span class="line">    &#123;</span><br><span class="line">        cout&lt;&lt;&quot;i=&quot;&lt;&lt;i&lt;&lt;endl;</span><br><span class="line">        if (!visit[i]) </span><br><span class="line">        &#123;</span><br><span class="line">            prime[++prime[0]]=i;    //纪录素数,这个prime[0] 相当于cnt，用来计数</span><br><span class="line">        &#125;</span><br><span class="line">        for(int j=1;j&lt;=prime[0]&amp;&amp;i*prime[j]&lt;=maxn;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            visit[i*prime[j]]=1;</span><br><span class="line">            if(i%prime[j]==0) </span><br><span class="line">            &#123;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>下面附上这道题的欧拉筛全AC代码</p>
+<div class="highlight-box"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel="PLAIN"><figure class="iseeu highlight /plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define N 10000010</span><br><span class="line">int n,m,cnt,x;</span><br><span class="line">int ss[N],vis[N];</span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    scanf(&quot;%d%d&quot;,&amp;n,&amp;m);</span><br><span class="line">    for(int i=2;i&lt;=n;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        if(!vis[i])</span><br><span class="line">        &#123;</span><br><span class="line">          vis[i]=i;</span><br><span class="line">          ss[++cnt]=i;</span><br><span class="line">        &#125;</span><br><span class="line">        for(int j=1;j&lt;=cnt&amp;&amp;i*ss[j]&lt;=n;j++)</span><br><span class="line">        &#123;</span><br><span class="line">            vis[i*ss[j]]=ss[j];</span><br><span class="line">            if(i%ss[j]==0)</span><br><span class="line">              break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    for(int i=1;i&lt;=m;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        cin&gt;&gt;x;</span><br><span class="line">        if(vis[x]==x)</span><br><span class="line">          cout&lt;&lt;&quot;Yes&quot;&lt;&lt;endl;</span><br><span class="line">        else </span><br><span class="line">          cout&lt;&lt;&quot;No&quot;&lt;&lt;endl;</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+
+      
+    </div>
+    
+      <footer class="article-footer">
+        完
+      </footer>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  <div class="article-nav-block">
+    
+  </div>
+  <div class="article-nav-block">
+    
+      <a href="/P1706/" id="article-nav-older" class="article-nav-link-wrap">
+        <div class="article-nav-title">P1706【全排列问题】题解</div>
+        <strong class="article-nav-caption"></strong>
+      </a>
+    
+  </div>
+</nav>
+
+    <link rel="stylesheet" href="/css/gitment.css"> 
+<script src="/js/gitment.js"></script>
+
+<div id="gitmentContainer"></div>
+
+<script>
+var gitment = new Gitment({
+  owner: '',
+  repo: '',
+  oauth: {
+    client_id: '',
+    client_secret: '',
+  },
+})
+gitment.render('gitmentContainer')
+</script>
+
+  
+  
+</article>
+</section>
+        <aside id="sidebar">
+  
+    <div class="widget-box">
+  <div class="avatar-box">
+    <img class="avatar" src="https://i.loli.net/2019/10/14/fSGXIx3UYtvwbz6.jpg" title="把手拿开"></img>
+    <h3 class="avatar-name">
+      
+        欢迎访问但丁的博客
+      
+    </h3>
+    <p class="avatar-slogan">
+      
+    </p>
+  </div>
+</div>
+
+
+  
+    
+
+  
+    
+  <div class="widget-box">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-box">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C++</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-box">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-box">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/P3383/">P3383【模板】线性筛素数题解</a>
+          </li>
+        
+          <li>
+            <a href="/P1706/">P1706【全排列问题】题解</a>
+          </li>
+        
+          <li>
+            <a href="/1212/">1212【LETTERS】题解</a>
+          </li>
+        
+          <li>
+            <a href="/P1028/">P1028【数的计算】题解</a>
+          </li>
+        
+          <li>
+            <a href="/P1308/">P1308【统计单词数】题解</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+      <div class="widget-box">
+    <h3 class="widget-title">友链</h3>
+    <div class="widget">
+      
+        <a style="display: block;" href="https://sdlang.ml" title target='_blank'
+        >eee_hoho</a>
+      
+        <a style="display: block;" href="https://zrzring.github.io" title target='_blank'
+        >ZRZ</a>
+      
+        <a style="display: block;" href="https://Tian-Xing.github.io" title target='_blank'
+        >Tian-Xing</a>
+      
+    </div>
+  </div>
+
+  
+</aside>
+      </div>
+      <footer id="footer">
+  <div class="foot-box global-width">
+    &copy; 2019 DantePeach &nbsp;&nbsp;
+    驱动于 <a href="http://hexo.io/" target="_blank">Hexo</a>
+    &nbsp;|&nbsp;主题 <a href="https://github.com/yiluyanxia/hexo-theme-antiquity">antiquity</a>
+    <br>
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span id="busuanzi_container_site_pv">不蒜子告之   阁下是第<span id="busuanzi_value_site_pv"></span>个访客</span>
+  </div>
+</footer>
+      <script src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script>
+if (!window.jQuery) {
+var script = document.createElement('script');
+script.src = "/js/jquery-2.0.3.min.js";
+document.body.write(script);
+}
+</script>
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+<script type="text/javascript" src="/js/clicklove.js"></script>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav-box">
+  <div class="mobile-nav-img mobile-nav-top"></div>
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+  <div class="mobile-nav-img  mobile-nav-bottom"></div>
+</nav>    
+  </div>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/wanko.model.json"},"display":{"position":"left","width":150,"height":300},"mobile":{"show":true},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
